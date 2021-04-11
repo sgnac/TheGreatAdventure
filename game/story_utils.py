@@ -45,14 +45,14 @@ def generateActionResult(action,action_loc,action_char):
     action_result_grammar = {
         'origin': ["#<char:"+action_char+"><loc:"+action_loc+">"+action+"#"],
             'move': ["You #movement# for a few #timeUnit.s# before you encounter a #loc#.", "after a few #timeUnit.s#, you encounter #char.a# who kindly show you the way to the #loc#."],
-            'chat': ["You converse with the #char# who teaches you about #subject#.","You have a nice chat with #char# who tell you about a nice place to visit : the #loc#."],
+            'chat': ["@CHAR1 Hi there!|@PLAYER I'm new here... Do you known about anything interesting?|@CHAR1 Hmm... Do you know about the #loc#? It's pretty nice to visit.","You converse with the #char# who teaches you about #subject#.","You have a nice chat with #char# who tell you about a nice place to visit : the #loc#."],
             'observe' : ["You look around you and spot a few #animal.s#."]
             }
     action_result_grammar.update(misc)
        
     action_result_grammar_object = renpy_tracery.Grammar(action_result_grammar)
     action_result_grammar_object.add_modifiers(renpy_tracery.base_english)
-    return action_result_grammar_object.flatten("#origin#")
+    return action_result_grammar_object.flatten("#origin#").split("|")
 
 def generateWinResult(action,action_loc,action_char):
     action_result_grammar = {
@@ -66,7 +66,7 @@ def generateWinResult(action,action_loc,action_char):
        
     action_result_grammar_object = renpy_tracery.Grammar(action_result_grammar)
     action_result_grammar_object.add_modifiers(renpy_tracery.base_english)
-    return action_result_grammar_object.flatten("#origin#")
+    return action_result_grammar_object.flatten("#origin#").split("|")
 
 def generateLoseResult(action,action_loc,action_char):
     action_result_grammar = {
@@ -80,6 +80,6 @@ def generateLoseResult(action,action_loc,action_char):
        
     action_result_grammar_object = renpy_tracery.Grammar(action_result_grammar)
     action_result_grammar_object.add_modifiers(renpy_tracery.base_english)
-    return action_result_grammar_object.flatten("#origin#")
+    return action_result_grammar_object.flatten("#origin#").split("|")
 
 

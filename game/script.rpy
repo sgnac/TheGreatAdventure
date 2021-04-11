@@ -22,8 +22,10 @@ init -1 python:
 
 
 # Define Tracery characters
-define e = TraceryCharacter("Eileen", grammar=narrator_grammar)
+define player = TraceryCharacter("You", grammar=narrator_grammar)
 define narrator = TraceryCharacter(None, grammar=narrator_grammar)
+
+define char1 = TraceryCharacter("Lucy", grammar=narrator_grammar)
 
 
 # The game starts here.
@@ -34,9 +36,7 @@ label start:
         place=random.choice(places)
         startPlaceImage = "background/"+place+".jpg"
         backgroundStartImg = im.Scale(startPlaceImage, 1280, 720)
-
         renpy.music.play("audio/background/"+place+".ogg", loop=True)
-
 
     
     $ startPlaceImageRpy = startPlaceImage
@@ -80,30 +80,39 @@ label choice:
 
 label choice1:
     if is_win:
-        $ result = story_utils.generateWinResult(action1, action1_loc, action1_char)
-        "[result]"
-        jump end
+        $ results = story_utils.generateWinResult(action1, action1_loc, action1_char)
     elif is_lose:
-         $ result = story_utils.generateLoseResult(action1, action1_loc, action1_char)
-         "[result]"
-         jump end
+        $ results = story_utils.generateLoseResult(action1, action1_loc, action1_char)
     else:
-        $ result = story_utils.generateActionResult(action1, action1_loc, action1_char)
-        "[result]"
-        jump choice
+        $ results = story_utils.generateActionResult(action1, action1_loc, action1_char)
+    
+    jump display_result
 
 label choice2:
     if is_win:
-        $ result = story_utils.generateWinResult(action2, action2_loc, action2_char)
-        "[result]"
-        jump end
+        $ results = story_utils.generateWinResult(action2, action2_loc, action2_char)
     elif is_lose:
-         $ result = story_utils.generateLoseResult(action2, action2_loc, action2_char)
-         "[result]"
-         jump end
+        $ results = story_utils.generateLoseResult(action2, action2_loc, action2_char)
     else:
-        $ result = story_utils.generateActionResult(action2, action2_loc, action2_char)
-        "[result]"
+        $ results = story_utils.generateActionResult(action2, action2_loc, action2_char)
+
+    jump display_result
+        
+label display_result:
+    while results:
+        $ result = results.pop(0)
+        if result.startswith("@PLAYER "):
+            $ result = result.replace("@PLAYER ", "")
+            player "[result]"
+        elif result.startswith("@CHAR1 "):
+            $ result = result.replace("@CHAR1 ", "")
+            char1 "[result]"
+        else:
+            "[result]"
+
+    if is_win or is_lose:
+        jump end
+    else:
         jump choice
 
 label end:
