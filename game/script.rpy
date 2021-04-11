@@ -54,9 +54,19 @@ label start:
     
     python:
         place=random.choice(places)
-   
+        startPlaceImage = "background/"+place+".jpg"
+        backgroundStartImg = im.Scale(startPlaceImage, 1280, 720)
+
+        renpy.music.play("audio/background/"+place+".ogg", loop=True)
+
+
+    
+    $ startPlaceImageRpy = startPlaceImage
     $ startPlace = place
+
     "You wake up in [startPlace]"
+    scene expression backgroundStartImg
+
 
     jump choice
 
