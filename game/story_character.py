@@ -30,16 +30,21 @@ class StoryCharacter(renpy_tracery.TraceryCharacter):
     age=0
     location=""
     text_color=""
+    image=""
+
     
     def __init__(self, **properties):
-        gender = random.choice(['male', 'female'])
-        name = nameGenerator.flatten("#"+gender+"Name#")       
-        text_color="#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-        properties['color']=text_color
-        super(StoryCharacter, self).__init__(name, {}, **properties)
+        self.gender = random.choice(['male', 'female'])
+        self.name = nameGenerator.flatten("#"+self.gender+"Name#")       
+        self.text_color="#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+        properties['color']=self.text_color
+        super(StoryCharacter, self).__init__(self.name, {}, **properties)
+
+        characterIndex = random.randint(1,2)
+        self.image="images/character/"+self.gender+str(characterIndex)+".png"
 
 
-        age=random.randint(18, 55)
-        location="city"
+        self.age=random.randint(18, 55)
+        self.location="city"
 
 

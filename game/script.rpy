@@ -115,10 +115,12 @@ label display_result:
             player "[result]"
         elif result.startswith("@CHAR1 "):
             $ result = result.replace("@CHAR1 ", "")
+            show expression characterList[-1].image 
             characterList[-1] "[result]"
         else:
             "[result]"
 
+    hide expression characterList[-1].image 
     if is_win or is_lose:
         jump end
     else:
