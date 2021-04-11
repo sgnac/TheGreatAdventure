@@ -4,6 +4,7 @@ init -1 python:
     from renpy_tracery import Grammar
     import story_utils
     import random
+    from story_character import StoryCharacter
   
     places= ['desert', 'city']
     actions =[ 'chat' , 'observe' , 'move' ]
@@ -20,12 +21,16 @@ init -1 python:
 
     narratorGrammarObject = Grammar(narrator_grammar)
 
+    characterList = []
+
 
 # Define Tracery characters
 define player = TraceryCharacter("You", grammar=narrator_grammar)
 define narrator = TraceryCharacter(None, grammar=narrator_grammar)
 
-define char1 = TraceryCharacter("Lucy", grammar=narrator_grammar)
+
+
+# define char1 = StoryCharacter()
 
 
 # The game starts here.
@@ -99,6 +104,10 @@ label choice2:
     jump display_result
         
 label display_result:
+    
+    python:
+        characterList.append(StoryCharacter())
+
     while results:
         $ result = results.pop(0)
         if result.startswith("@PLAYER "):
@@ -106,7 +115,7 @@ label display_result:
             player "[result]"
         elif result.startswith("@CHAR1 "):
             $ result = result.replace("@CHAR1 ", "")
-            char1 "[result]"
+            characterList[-1] "[result]"
         else:
             "[result]"
 
