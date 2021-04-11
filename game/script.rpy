@@ -13,38 +13,16 @@ init -1 python:
     action1_loc =''
     action2_loc =''
 
-    
 
-    # Define Tracery grammar for Eileen.
-    example_grammar = {
-        'greetings': ['hello', 'hi', 'hey'],
-    }
     # Define Tracery grammar for narrator character.
     narrator_grammar = {
-       
-        'eileen': ['Eileen', 'dear Eileen', 'sweet Eileen'],
-        'girl': ['girl', 'young lady'],
-        'once': ['one day', 'one time', 'some day', 'once'],
-        'moody': ['moody', 'grumpy', 'bad-tempered', 'ill-tempered']
     }
- 
-    
-    props_grammar = {
-            'city_character': ["merchant", "barmaid"],
-            'city_location': ["church"],
-            'desert_character': ['hermit'],
-            'desert_location': ['oasis']
-        }
-
-    
- 
 
     narratorGrammarObject = Grammar(narrator_grammar)
-    propsGrammarObject = Grammar(props_grammar)
 
 
 # Define Tracery characters
-define e = TraceryCharacter("Eileen", grammar=example_grammar)
+define e = TraceryCharacter("Eileen", grammar=narrator_grammar)
 define narrator = TraceryCharacter(None, grammar=narrator_grammar)
 
 
@@ -76,18 +54,14 @@ label choice:
     $ action2 = random.choice(actions)
 
     python:
-        action1_char = propsGrammarObject.flatten("#"+place+"_character#")
-        action2_char = propsGrammarObject.flatten("#"+place+"_character#")
-        action1_loc = propsGrammarObject.flatten("#"+place+"_location#")
-        action2_loc = propsGrammarObject.flatten("#"+place+"_location#")
         odds=random.randint(0,9)
         win = (odds==9)
         lose = (odds==0)
 
-    $ action1_char_rpy = action1_char
-    $ action2_char_rpy = action2_char
-    $ action1_loc_rpy = action1_loc
-    $ action2_loc_rpy = action2_loc
+    $ action1_char =  story_utils.generatePerson(place)
+    $ action2_char = story_utils.generatePerson(place)
+    $ action1_loc = story_utils.generateLocation(place)
+    $ action2_loc =  story_utils.generateLocation(place)
     $ is_win = win
     $ is_lose = lose
 
