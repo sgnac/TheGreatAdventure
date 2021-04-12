@@ -10,9 +10,12 @@
 import renpy_tracery
 import random
 
+nbCharacterSprites = 2
+
 characterNames =  {
     'setHeroNameAndPronouns': ["[heroThey:she][heroThem:her][heroTheir:her][heroTheirs:hers][heroName:#femaleName.capitalize#]","[heroThey:he][heroThem:him][heroTheir:his][heroTheirs:his][heroName:#maleName.capitalize#]"],
     'designHero': ["#heroThey#", "#heroThey#", "#heroThey#", "#heroName#"],
+	
     'maleName' : ["#nameSyllable.capitalize##maleNameEnd#", "#nameSyllable.capitalize##nameSyllable##maleNameEnd#"],
     'femaleName' : ["#nameSyllable.capitalize##femaleNameEnd#", "#nameSyllable.capitalize##nameSyllable##femaleNameEnd#"],
     'nameSyllable': ["e", "ju", "ma", "bo", "ne", "ri", "a", "syl", "val", "di", "fla"],
@@ -40,7 +43,7 @@ class StoryCharacter(renpy_tracery.TraceryCharacter):
         properties['color']=self.text_color
         super(StoryCharacter, self).__init__(self.name, {}, **properties)
 
-        characterIndex = random.randint(1,2)
+        characterIndex = random.randint(1,nbCharacterSprites)
         self.image="images/character/"+self.gender+str(characterIndex)+".png"
 
 

@@ -30,9 +30,6 @@ define narrator = TraceryCharacter(None, grammar=narrator_grammar)
 
 
 
-# define char1 = StoryCharacter()
-
-
 # The game starts here.
 
 label start:
@@ -45,13 +42,14 @@ label start:
 
     
     $ startPlaceImageRpy = startPlaceImage
-    $ startPlace = place
-
-    "You wake up in [startPlace]"
+    $ results = story_utils.generateInitialDescription(place)
+    
     scene expression backgroundStartImg
+    while results:
+        $ result = results.pop(0)
+        "[result]"
 
-
-    jump choice
+    jump choice 
 
 label choice:
 
@@ -64,15 +62,21 @@ label choice:
         lose = (odds==0)
 
     $ action1_char =  story_utils.generatePerson(place)
-    $ action2_char = story_utils.generatePerson(place)
     $ action1_loc = story_utils.generateLocation(place)
-    $ action2_loc =  story_utils.generateLocation(place)
+    $ action2_char = story_utils.generatePerson(place)
+    while action2_char == action1_char:
+        $ action2_char = story_utils.generatePerson(place)
+    $ action2_loc = story_utils.generateLocation(place)
+    while action2_loc == action1_loc:
+        $ action2_loc = story_utils.generateLocation(place)
+
     $ is_win = win
     $ is_lose = lose
 
-
     $ choice1 = story_utils.generateChoice(action1, action1_loc, action1_char)
     $ choice2 = story_utils.generateChoice(action2, action2_loc, action2_char)
+    while choice2 == choice1:
+        $ choice2 = story_utils.generateChoice(action2, action2_loc, action2_char)
 
     menu:
         "[choice1]":
@@ -93,6 +97,7 @@ label choice1:
     
     jump display_result
 
+
 label choice2:
     if is_win:
         $ results = story_utils.generateWinResult(action2, action2_loc, action2_char)
@@ -103,6 +108,7 @@ label choice2:
 
     jump display_result
         
+
 label display_result:
     
     python:
@@ -126,8 +132,8 @@ label display_result:
     else:
         jump choice
 
+
 label end:
 
     "The End"
-
     return
